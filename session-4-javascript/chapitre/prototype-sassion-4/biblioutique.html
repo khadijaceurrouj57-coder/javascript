@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Catalogue de la Bibliothèque</title>
+</head>
+<body>
+  <header>
+    <div class="nav-links">
+      <a href="safha.html">🏠 Accueil</a>
+      <a href="ajoute.html">➕ Ajouter un livre</a>
+    </div>
+
+    <div class="right-header">
+      <h2>📚 Catalogue</h2>
+      <input type="text" id="Rechercher" placeholder="Rechercher un titre...">
+    </div>
+  </header>
+
+  <div class="container" id="listeLivres"></div>
+
+  <footer>
+    <p id="stats"></p>
+  </footer>
+  <style>
+    body { 
+      font-family: Poppins, sans-serif;
+      background-color: #f4f6fa;
+      margin: 0;
+    }
+
+    header {
+      background: black;
+      color: white; 
+      padding: 15px 30px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    header a {
+      color: white;
+      text-decoration: none; 
+      background: rgba(255,255,255,0.2);
+      padding: 8px 12px; 
+      border-radius: 8px;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    header a:hover {
+      background: white;
+      color: #5563DE;
+    }
+    .right-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .right-header h2 {
+      margin: 0;
+    }
+
+    #Rechercher {
+      padding: 10px 15px;
+      border-radius: 4px;
+      width: 300px;
+      font-size: 16px;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap; 
+      gap: 20px; 
+      padding: 20px; 
+      justify-content: center; 
+    }
+
+    .card {
+      background: white; 
+      border-radius: 10px; 
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      width: 250px; 
+      padding: 15px; 
+      transition: 0.3s;
+    }
+
+    .card:hover { transform: scale(1.03); }
+
+    button {
+      background: crimson; 
+      color: white; 
+      border: none;
+      padding: 8px 12px; 
+      border-radius: 5px; 
+      cursor: pointer;
+    }
+
+    footer {
+      background: #222; 
+      color: white; 
+      text-align: center;
+      padding: 10px; 
+      position: fixed; 
+      bottom: 0; 
+      width: 100%;
+    }
+  </style> 
+  <script>
+    let bibliotheque = JSON.parse(localStorage.getItem("bibliotheque")) || [
+      { code:12, titre:"Clean Code", auteur:"Robert C. Martin", annee:2008, disponible:true, prix:150 },
+      { code:45, titre:"Eloquent JavaScript", auteur:"Marijn Haverbeke", annee:2018, disponible:true, prix:200 },
+    ];
+
+    function afficherLivres(filtre = "") {
+      const container = document.getElementById("listeLivres");
+      container.innerHTML = "";
+      const livresFiltres = bibliotheque.filter(livre =>
+        livre.titre.toLowerCase().includes(filtre.toLowerCase())
+      );
+      livresFiltres.forEach(livre => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${livre.titre}</h3>
+          <p><b>Auteur:</b> ${livre.auteur}</p>
+          <p><b>Année:</b> ${livre.annee}</p>
+          <p><b>Prix:</b> ${livre.prix} DH</p>
+          <p><b>Disponible:</b> ${livre.disponible ? "Oui ✅" : "Non ❌"}</p>
+          <button onclick="supprimerLivre(${livre.code})">Supprimer</button>
+        `;
+        container.appendChild(card);
+      });
+      afficherStats();
+    }
+
+    function supprimerLivre(code) {
+      const index = bibliotheque.findIndex(l => l.code === code);
+      if (index !== -1) bibliotheque.splice(index, 1);
+      localStorage.setItem("bibliotheque", JSON.stringify(bibliotheque));
+      afficherLivres(document.getElementById("Rechercher").value);
+    }
+
+    function afficherStats() {
+      const total = bibliotheque.length;
+      const dispo = bibliotheque.filter(l => l.disponible).length;
+      document.getElementById("stats").textContent = 
+      `Total livres ${total} | Disponibles: ${dispo}`
+
+    }
+
+    document.getElementById("Rechercher").addEventListener("input", (e) => {
+      afficherLivres(e.target.value);
+    });
+
+    afficherLivres();
+  </script>
+
+</body>
+</html>

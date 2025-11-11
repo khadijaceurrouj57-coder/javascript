@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajouter un Livre</title>
+</head>
+<body>
+  <header><a href="safha.html">🏠 Retour</a></header>
+  <h2>➕ Ajouter un Livre</h2>
+  <form id="formLivre">
+    <input type="number" id="code" placeholder="Code" required>
+    <input type="text" id="titre" placeholder="Titre" required>
+    <input type="text" id="auteur" placeholder="Auteur" required>
+    <input type="number" id="annee" placeholder="Année" required>
+    <input type="number" id="prix" placeholder="Prix (DH)" required>
+    <label><input type="checkbox" id="disponible" checked> Disponible</label><br>
+    <button type="submit">Ajouter</button>
+  </form>
+  <style>
+    body {
+      font-family: Poppins, sans-serif;
+      background: #eef1f8; 
+      display: flex; 
+      flex-direction: column;
+      align-items: center; 
+      padding: 50px;
+    }
+    form {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
+    width: 300px;
+    }
+    input, button {
+      width: 100%;
+      margin-bottom: 10px; 
+      padding: 8px;
+      border-radius: 5px; 
+      border: 1px solid #ccc;
+    }
+    button {
+      background: black; 
+      color: white; 
+      font-weight: bold;
+      border: none; 
+      cursor: pointer; 
+      transition: 0.3s;
+    }
+    button:hover { background: #069a32; }
+    header {
+      position: absolute; 
+      top: 15px; 
+      left: 15px;
+    }
+    header a {
+      text-decoration: none; 
+      color: white; 
+      background: #000212;
+      padding: 8px 12px; 
+      border-radius: 6px;
+    }
+  </style>
+
+  <script>
+    let bibliotheque = JSON.parse(localStorage.getItem("bibliotheque")) || [];
+
+    document.getElementById("formLivre").addEventListener("submit", e => {
+      e.preventDefault();
+
+      const nouveauLivre = {
+        code: parseInt(document.getElementById("code").value),
+        titre: document.getElementById("titre").value,
+        auteur: document.getElementById("auteur").value,
+        annee: parseInt(document.getElementById("annee").value),
+        prix: parseFloat(document.getElementById("prix").value),
+        disponible: document.getElementById("disponible").checked
+      };
+
+      bibliotheque.push(nouveauLivre);
+      localStorage.setItem("bibliotheque", JSON.stringify(bibliotheque));
+
+      alert("✅ Livre ajouté avec succès !");
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
