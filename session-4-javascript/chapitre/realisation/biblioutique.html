@@ -3,6 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <title>Catalogue de la Bibliothèque</title>
+</head>
+<body>
+  <header>
+    <div class="nav-links">
+      <a href="safha.html">🏠 Accueil</a>
+      <a href="ajoute.html">➕ Ajouter un livre</a>
+    </div>
+
+    <div class="right-header">
+      <h2>📚 Catalogue</h2>
+      <input type="text" id="Rechercher" placeholder="Rechercher un titre...">
+      <button id="trier">Trier A-Z / Z-A</button>
+    </div>
+  </header>
+
+  <div class="container" id="listeLivres"></div>
+  <div class="plus-cher" id="plusCher"></div>
+
+  <footer><p id="stats"></p></footer>
+
   <style>
     body { 
       font-family: Poppins, sans-serif;
@@ -72,25 +92,6 @@
       width: 100%;
     }
   </style>
-</head>
-<body>
-  <header>
-    <div class="nav-links">
-      <a href="safha.html">🏠 Accueil</a>
-      <a href="ajoute.html">➕ Ajouter un livre</a>
-    </div>
-
-    <div class="right-header">
-      <h2>📚 Catalogue</h2>
-      <input type="text" id="Rechercher" placeholder="Rechercher un titre...">
-      <button id="trier">Trier A-Z / Z-A</button>
-    </div>
-  </header>
-
-  <div class="container" id="listeLivres"></div>
-  <div class="plus-cher" id="plusCher"></div>
-
-  <footer><p id="stats"></p></footer>
 
   <script>
     let bibliotheque = JSON.parse(localStorage.getItem("bibliotheque")) || [
